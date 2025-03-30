@@ -1,0 +1,212 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "H:\\PROGRAMOVANI\\3D_Game\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\basic.frag||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\basic.frag||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\models\\simpleobj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\models\\simpleobj.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\camera.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\light.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\light.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\model.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\vertex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\vertex.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\basic.vert||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\basic.vert||{8B382828-6202-11D1-8870-0000F87579D2}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\viewport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\viewport.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\models\\wall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\models\\wall.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|h:\\programovani\\3d_game\\src\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B93590CA-E72B-7EC5-F412-60FAEB232F04}|src\\3DGame.csproj|solutionrelative:src\\shader.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 3,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Program.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Program.cs",
+              "RelativeDocumentMoniker": "src\\Program.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Program.cs",
+              "RelativeToolTip": "src\\Program.cs",
+              "ViewState": "AgIAAEEAAAAAAAAAAADgv1YAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T22:14:16.125Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Light.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Light.cs",
+              "RelativeDocumentMoniker": "src\\Light.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Light.cs",
+              "RelativeToolTip": "src\\Light.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAqwAkAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-26T23:23:24.589Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Model.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Model.cs",
+              "RelativeDocumentMoniker": "src\\Model.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Model.cs",
+              "RelativeToolTip": "src\\Model.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAswFoAAAAxAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-29T09:15:50.024Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "basic.frag",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\basic.frag",
+              "RelativeDocumentMoniker": "src\\basic.frag",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\basic.frag",
+              "RelativeToolTip": "src\\basic.frag",
+              "ViewState": "AgIAABEAAAAAAAAAAAAqwCMAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-26T22:48:37.859Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "basic.vert",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\basic.vert",
+              "RelativeDocumentMoniker": "src\\basic.vert",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\basic.vert",
+              "RelativeToolTip": "src\\basic.vert",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2025-03-30T07:23:16.755Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Vertex.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Vertex.cs",
+              "RelativeDocumentMoniker": "src\\Vertex.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Vertex.cs",
+              "RelativeToolTip": "src\\Vertex.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T09:01:49.517Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Viewport.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Viewport.cs",
+              "RelativeDocumentMoniker": "src\\Viewport.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Viewport.cs",
+              "RelativeToolTip": "src\\Viewport.cs",
+              "ViewState": "AgIAABEAAAAAAAAAAAAQwDAAAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T09:01:22.397Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Wall.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\models\\Wall.cs",
+              "RelativeDocumentMoniker": "src\\models\\Wall.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\models\\Wall.cs",
+              "RelativeToolTip": "src\\models\\Wall.cs",
+              "ViewState": "AgIAACUAAAAAAAAAAAAgwD0AAABCAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T08:29:17.479Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "SimpleObj.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\models\\SimpleObj.cs",
+              "RelativeDocumentMoniker": "src\\models\\SimpleObj.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\models\\SimpleObj.cs",
+              "RelativeToolTip": "src\\models\\SimpleObj.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T08:29:16.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Camera.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Camera.cs",
+              "RelativeDocumentMoniker": "src\\Camera.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Camera.cs",
+              "RelativeToolTip": "src\\Camera.cs",
+              "ViewState": "AgIAAFoAAAAAAAAAAAAYwHcAAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T08:11:47.764Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "Shader.cs",
+              "DocumentMoniker": "H:\\PROGRAMOVANI\\3D_Game\\src\\Shader.cs",
+              "RelativeDocumentMoniker": "src\\Shader.cs",
+              "ToolTip": "H:\\PROGRAMOVANI\\3D_Game\\src\\Shader.cs",
+              "RelativeToolTip": "src\\Shader.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAArwDIAAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-30T07:14:30.55Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
