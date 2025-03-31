@@ -13,7 +13,7 @@ namespace Game3D
     {
         private float zoom = 1;
         public Vector3 pos;
-        public Vector3 front;
+        public Vector3 dir;
         public float rx;
         public float ry;
         public float speed = 1.4f;
@@ -28,6 +28,13 @@ namespace Game3D
             this.pos = pos;
             this.rx = 0;
             this.ry = 0;
+            this.dir = Vector3.Zero;
+        }
+
+        public void setDirection()
+        {
+
+            dir = new Vector3(0, 0.3f, 0);
         }
 
         public virtual Matrix4 Projection
@@ -90,20 +97,11 @@ namespace Game3D
         {
             rx += a * sensitivity;
             rx = (float)Math.Max(-Math.PI / 2, Math.Min(Math.PI / 2, rx));
-            updateFront();
         }
 
         public void RotateY(float a)
         {
             ry += a * sensitivity;
-            updateFront();
-        }
-
-        public void updateFront()
-        {
-            front.X = (float)Math.Cos(MathHelper.DegreesToRadians(ry)) * (float)Math.Cos(MathHelper.DegreesToRadians(rx));
-            front.Y = (float)Math.Sin(MathHelper.DegreesToRadians(ry));
-            front.Z = (float)Math.Cos(MathHelper.DegreesToRadians(ry)) * (float)Math.Sin(MathHelper.DegreesToRadians(rx));
         }
 
 

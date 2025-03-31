@@ -164,6 +164,8 @@ public class Program : GameWindow
             mouseDelta = Vector2.Zero;
         }
 
+        mainCamera.setDirection();
+
     }
 
     Vector2 mouseDelta;
