@@ -78,29 +78,19 @@ namespace Game3D
             Shader.SetUniform("view", camera.View);
             Shader.SetUniform("model", translate);
 
-            Shader.SetUniform("cameraPosWorld", camera.pos);
+            Shader.SetUniform("cameraPosWorld", camera.position);
 
             Material.SetUniforms(Shader);
 
-            float flashlightHeight = 2.05f;
+            const float flashlightHeight = 2.05f;
             float depressionAngle = 2.0f;
 
 
-            float depressionAngleRad = MathHelper.DegreesToRadians(depressionAngle);
-
-            Vector3 flashlightDirection = new Vector3(
-                MathF.Cos(-camera.rx) * MathF.Sin(camera.ry),   // Fix yaw direction here
-                MathF.Sin(-camera.rx),
-                MathF.Cos(-camera.rx) * MathF.Cos(camera.ry)    // Keep cosine for z-direction
-            );
-
-            Console.WriteLine(flashlightDirection + " " + camera.dir);
-
-            Shader.SetUniform("light.position", new Vector3(camera.pos.X, flashlightHeight, camera.pos.Z));
-            Shader.SetUniform("light.direction", camera.dir);
-            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(12.5f)));
+            Shader.SetUniform("light.position", new Vector3(camera.position.X, flashlightHeight, camera.position.Z));
+            Shader.SetUniform("light.direction", camera.Front);
+            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20.5f)));
             Shader.SetUniform("light.ambient", new Vector3(0.2f, 0.2f, 0.2f));
-            Shader.SetUniform("light.diffuse", new Vector3(0.6f, 0.6f, 0.6f));
+            Shader.SetUniform("light.diffuse", new Vector3(0.7f, 0.7f, 0.7f));
             Shader.SetUniform("light.specular", new Vector3(1.0f, 1.0f, 1.0f));
 
             

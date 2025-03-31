@@ -22,7 +22,8 @@ public class Program : GameWindow
     }
 
     const float PLAYER_VIEW = 1.7f;
-    const float FLASHLIGHT_HEIGHT = 2.07f;
+
+    bool[][] collisions;
 
     Viewport mainViewport;
     Camera mainCamera;
@@ -37,6 +38,9 @@ public class Program : GameWindow
 
     int mapSizeX;
     int mapSizeZ;
+
+    private bool _firstMove = true;
+    private Vector2 _lastPos;
 
     private double elapsedTime = 0.0;
     private int frameCount = 0;
@@ -113,31 +117,45 @@ public class Program : GameWindow
         SwapBuffers();
     }
    
-    protected override void OnUpdateFrame(FrameEventArgs args)
+    protected override void OnUpdateFrame(FrameEventArgs e)
     {
         Vector2 direction = new Vector2(0, 0);
 
-        if (KeyboardState.IsKeyDown(Keys.Escape)) Close();
-        if (KeyboardState.IsKeyDown(Keys.Tab))
+        var input = KeyboardState;
+
+        if (input.IsKeyDown(Keys.Escape))
         {
-            if (grabbed)
-            {
-                CursorState = CursorState.Normal;
-                grabbed = false;
-            }
-            else
-            {
-                CursorState = CursorState.Grabbed;
-                grabbed = true;
-            }
+            Close();
         }
 
-        if (KeyboardState.IsKeyDown(Keys.E))
+        const float cameraSpeed = 1.5f;
+        const float cameraHeight = 1.7f;
+        const float sensitivity = 0.2f;
+
+        if (input.IsKeyDown(Keys.W))
+        {
+            mainCamera.position += mainCamera.Front * cameraSpeed * (float)e.Time; // Forward
+        }
+
+        if (input.IsKeyDown(Keys.S))
+        {
+            mainCamera.position -= mainCamera.Front * cameraSpeed * (float)e.Time; // Backwards
+        }
+        if (input.IsKeyDown(Keys.A))
+        {
+            mainCamera.position -= mainCamera.Right * cameraSpeed * (float)e.Time; // Left
+        }
+        if (input.IsKeyDown(Keys.D))
+        {
+            mainCamera.position += mainCamera.Right * cameraSpeed * (float)e.Time; // Right
+        }
+
+        if (input.IsKeyDown(Keys.E))
         {
             for (int i = 0; i < doors.Count; i++)
             {
                 if (doors[i].open) continue;
-                if (doors[i].Check(mainCamera))
+                if (doors[i].Check(mainCamera, collisions))
                 {
                     doors[i].open = true;
                     break;
@@ -145,33 +163,30 @@ public class Program : GameWindow
             }
         }
 
-        if (KeyboardState.IsKeyDown(Keys.W)) direction += Vector2.UnitY;
-        if (KeyboardState.IsKeyDown(Keys.S)) direction -= Vector2.UnitY;
-        if (KeyboardState.IsKeyDown(Keys.A)) direction -= Vector2.UnitX;
-        if (KeyboardState.IsKeyDown(Keys.D)) direction += Vector2.UnitX;
+        mainCamera.position = new Vector3(mainCamera.position.X, cameraHeight, mainCamera.position.Z);
+        var mouse = MouseState;
 
-        var len = direction.Length;
-        if (len > 0)
+        if (_firstMove)
         {
-            direction *= (float)args.Time / len;
-            mainCamera.Move(direction.X, direction.Y);
+            _lastPos = new Vector2(mouse.X, mouse.Y);
+            _firstMove = false;
         }
-
-        if(mouseDelta.LengthSquared > 0.00001)
+        else
         {
-            mainCamera.RotateX(mouseDelta.Y*(float)args.Time);
-            mainCamera.RotateY(mouseDelta.X*(float)args.Time);
-            mouseDelta = Vector2.Zero;
+            var deltaX = mouse.X - _lastPos.X;
+            var deltaY = mouse.Y - _lastPos.Y;
+            _lastPos = new Vector2(mouse.X, mouse.Y);
+
+            mainCamera.Yaw += deltaX * sensitivity;
+            mainCamera.Pitch -= deltaY * sensitivity;
         }
-
-        mainCamera.setDirection();
-
     }
 
-    Vector2 mouseDelta;
-    protected override void OnMouseMove(MouseMoveEventArgs e)
+    protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
-        mouseDelta += new Vector2(e.DeltaX, e.DeltaY);
+        base.OnMouseWheel(e);
+
+        mainCamera.Fov -= e.OffsetY;
     }
 
     // Loads the map from .md file
@@ -188,7 +203,7 @@ public class Program : GameWindow
             plane = new Plane(new Vector3(mapSizeX / 2f, 0f, mapSizeZ / 2f), mapSizeX, mapSizeZ);
             plane.Shader = new Shader("basic.vert", "basic.frag");
 
-            bool[][] collisions = new bool[mapSizeX / 2][];
+            collisions = new bool[mapSizeX / 2][];
             for (int i = 0; i < mapSizeX / 2; i++)
             {
                 collisions[i] = new bool[mapSizeZ / 2];
@@ -235,7 +250,6 @@ public class Program : GameWindow
                 }
                 z++;
             }
-            mainCamera.collisions = collisions;
         }
         return;
     }

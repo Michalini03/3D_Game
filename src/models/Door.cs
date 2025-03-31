@@ -53,7 +53,7 @@ namespace Zpg.models
 
             this.Material = new Material(
                 new Vector3(0.6f, 0.3f, 0.1f), // Ambient (hnědá barva)
-                new Vector3(0.6f, 0.3f, 0.1f), // Diffuse (hnědá barva)
+                new Vector3(0.9f, 0.5f, 0.5f), // Diffuse (hnědá barva)
                 new Vector3(0.2f, 0.1f, 0.05f), // Specular (nízký lesk)
                 4.0f                            // Shininess (nízký lesk)
             );
@@ -62,19 +62,19 @@ namespace Zpg.models
             this.indexZ = indexZ;
         }
 
-        public bool Check(Camera player)
+        public bool Check(Camera player, bool[][] collisions)
         {
-            if ((int)player.pos.X/2 == indexX && ((int)player.pos.Z/2 - 1 == indexZ || (int)player.pos.Z / 2 + 1 == indexZ))
+            if ((int)player.position.X/2 == indexX && ((int)player.position.Z/2 - 1 == indexZ || (int)player.position.Z / 2 + 1 == indexZ))
             {
-                player.collisions[indexZ][indexX] = false;
+                collisions[indexZ][indexX] = false;
                 return true;
             }
-            else if ((int)player.pos.Z / 2 == indexZ && ((int)player.pos.X / 2 - 1 == indexX || (int)player.pos.X / 2 + 1 == indexX))
+            else if ((int)player.position.Z / 2 == indexZ && ((int)player.position.X / 2 - 1 == indexX || (int)player.position.X / 2 + 1 == indexX))
             {
-                player.collisions[indexZ][indexX] = false;
+                collisions[indexZ][indexX] = false;
                 return true;
             }
-            Console.WriteLine("Player X: " + (int)player.pos.X / 2 + " Z: " + (int)player.pos.Z / 2 + "; Doors X: " + indexX + "Z: " + indexZ);
+            Console.WriteLine("Player X: " + (int)player.position.X / 2 + " Z: " + (int)player.position.Z / 2 + "; Doors X: " + indexX + "Z: " + indexZ);
             return false;
         }
     }

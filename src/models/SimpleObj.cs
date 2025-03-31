@@ -49,7 +49,7 @@ namespace Zpg.models
 
             Material = new Material(
                 new Vector3(0.2f, 0.2f, 0.2f), // ambient
-                new Vector3(0.2f, 0.2f, 0.2f), // diffuse
+                new Vector3(0.6f, 0.6f, 0.6f), // diffuse
                 new Vector3(0.8f, 0.8f, 0.8f), // specular
                 32.0f
             );

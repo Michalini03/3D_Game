@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\UNI\\3D_Game\\src\\3DGame.csproj": {}
+    "H:\\PROGRAMOVANI\\3D_Game\\src\\3DGame.csproj": {}
   },
   "projects": {
-    "D:\\UNI\\3D_Game\\src\\3DGame.csproj": {
+    "H:\\PROGRAMOVANI\\3D_Game\\src\\3DGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\UNI\\3D_Game\\src\\3DGame.csproj",
+        "projectUniqueName": "H:\\PROGRAMOVANI\\3D_Game\\src\\3DGame.csproj",
         "projectName": "3DGame",
-        "projectPath": "D:\\UNI\\3D_Game\\src\\3DGame.csproj",
-        "packagesPath": "C:\\Users\\malikm\\.nuget\\packages\\",
-        "outputPath": "D:\\UNI\\3D_Game\\src\\obj\\",
+        "projectPath": "H:\\PROGRAMOVANI\\3D_Game\\src\\3DGame.csproj",
+        "packagesPath": "C:\\Users\\micha\\.nuget\\packages\\",
+        "outputPath": "H:\\PROGRAMOVANI\\3D_Game\\src\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\malikm\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\micha\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

@@ -60,8 +60,8 @@ namespace Zpg.models
 
             // Material settings (diffuse, specular, shininess)
             this.Material = new Material(
-                new Vector3(0.5f, 0.5f, 0.5f), // Ambient (šedá)
-                new Vector3(0.5f, 0.5f, 0.5f), // Diffuse (šedá)
+                new Vector3(0.2f, 0.2f, 0.2f), // Ambient (šedá)
+                new Vector3(1f, 1f, 1f), // Diffuse (šedá)
                 new Vector3(0.8f, 0.8f, 0.8f), // Specular (světle šedá, lesk)
                 16.0f                          // Shininess (lesklost)
             );

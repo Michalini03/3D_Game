@@ -11,11 +11,20 @@ namespace Game3D
 {
     public class Camera
     {
-        private float zoom = 1;
-        public Vector3 pos;
+        const float depressionAngle = 2.0f;
+
+        private Vector3 _front = -Vector3.UnitZ;
+
+        private Vector3 _up = Vector3.UnitY;
+
+        private Vector3 _right = Vector3.UnitX;
+        
         public Vector3 dir;
-        public float rx;
-        public float ry;
+        private float _pitch;
+        private float _yaw = -MathHelper.PiOver2;
+
+        private float _fov = MathHelper.PiOver2;
+
         public float speed = 1.4f;
         public float sensitivity = 1;
         
@@ -25,98 +34,82 @@ namespace Game3D
         public Camera(Viewport viewport, Vector3 pos)
         {
             this.viewport = viewport;
-            this.pos = pos;
-            this.rx = 0;
-            this.ry = 0;
-            this.dir = Vector3.Zero;
+            this.position = pos;
         }
 
-        public void setDirection()
-        {
-
-            dir = new Vector3(0, 0.3f, 0);
-        }
+        public Vector3 position { get; set; }
 
         public virtual Matrix4 Projection
         {
             get
             {
                 float ratio = (float)((viewport.Width * viewport.window.ClientSize.X) / (viewport.Height * viewport.window.ClientSize.Y));
-                return Matrix4.CreatePerspectiveFieldOfView(zoom, ratio, 0.1f, 50);
+                return Matrix4.CreatePerspectiveFieldOfView(_fov, ratio, 0.1f, 50);
             }
         }
 
-        public void Zoom(float coef)
+        public Vector3 Front => _front;
+
+        public Vector3 Up => _up;
+
+        public Vector3 Right => _right;
+
+        public float Pitch
         {
-            //zoom *= coef;
-            zoom += coef / 10.0f;
-            zoom = Math.Max(0.2f, Math.Min(2, zoom));
-            Console.WriteLine(zoom);
-        }
-
-        public void Move(float xdt, float ydt)
-        {
-            float newPosX = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
-            float newPosZ = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
-
-            float collisionRadius = 0.15f;
-
-            int newIndexXLeft = (int)((newPosX - collisionRadius) / 2);
-            int newIndexXRight = (int)((newPosX + collisionRadius) / 2);
-            int newIndexZUp = (int)((newPosZ - collisionRadius) / 2);
-            int newIndexZDown = (int)((newPosZ + collisionRadius) / 2);
-
-            if (newIndexXLeft < 0) newIndexXLeft = 0;
-            if (newIndexXRight >= collisions[0].Length) newIndexXRight = collisions[0].Length - 1;
-            if (newIndexZUp < 0) newIndexZUp = 0;
-            if (newIndexZDown >= collisions.Length) newIndexZDown = collisions.Length - 1;
-
-            bool collisionDetected = collisions[newIndexZUp][newIndexXLeft] ||
-                                     collisions[newIndexZUp][newIndexXRight] ||
-                                     collisions[newIndexZDown][newIndexXLeft] ||
-                                     collisions[newIndexZDown][newIndexXRight];
-
-            if (!collisionDetected)
+            get => MathHelper.RadiansToDegrees(_pitch);
+            set
             {
-                pos.X += speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
-                pos.Z += speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
+                // We clamp the pitch value between -89 and 89 to prevent the camera from going upside down, and a bunch
+                // of weird "bugs" when you are using euler angles for rotation.
+                // If you want to read more about this you can try researching a topic called gimbal lock
+                var angle = MathHelper.Clamp(value, -89f, 89f);
+                _pitch = MathHelper.DegreesToRadians(angle);
+                MathHelper.DegreesToRadians(depressionAngle);
+                UpdateVectors();
             }
-            else
+        }
+
+        public float Yaw
+        {
+            get => MathHelper.RadiansToDegrees(_yaw);
+            set
             {
-                if ((int)pos.Z / 2 != newIndexZUp || (int)pos.Z / 2 != newIndexZDown) { 
-                    pos.X += speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
-                }
-                else if ((int)pos.X / 2 != newIndexXLeft || (int)pos.X / 2 != newIndexXRight)
-                {
-                    pos.Z += speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
-                }
+                _yaw = MathHelper.DegreesToRadians(value);
+                UpdateVectors();
             }
         }
 
-        public void RotateX(float a)
+        public float Fov
         {
-            rx += a * sensitivity;
-            rx = (float)Math.Max(-Math.PI / 2, Math.Min(Math.PI / 2, rx));
+            get => MathHelper.RadiansToDegrees(_fov);
+            set
+            {
+                var angle = MathHelper.Clamp(value, 1f, 90f);
+                _fov = MathHelper.DegreesToRadians(angle);
+            }
         }
-
-        public void RotateY(float a)
-        {
-            ry += a * sensitivity;
-        }
-
 
         public virtual Matrix4 View
         {
             get
             {
                 Matrix4 view;
-                view = Matrix4.Identity;
-                view *= Matrix4.CreateTranslation(-pos);
-                view *= Matrix4.CreateRotationY(ry);
-                view *= Matrix4.CreateRotationX(rx);
+                view = Matrix4.LookAt(position, position + _front, _up);
                 return view;
             }
 
+        }
+
+        private void UpdateVectors()
+        {
+            _front.X = MathF.Cos(_pitch) * MathF.Cos(_yaw);
+            _front.Y = MathF.Sin(_pitch);
+            _front.Z = MathF.Cos(_pitch) * MathF.Sin(_yaw);
+
+            _front = Vector3.Normalize(_front);
+
+            _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
+            _up = Vector3.Normalize(Vector3.Cross(_right, _front));
         }
     }
 }
