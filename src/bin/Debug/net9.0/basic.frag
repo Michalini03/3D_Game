@@ -1,7 +1,6 @@
 # version 330 core
 
 struct Material {
-    vec3 ambient;
     vec3 diffuse;
     vec3 specular;
     float shininess;
@@ -9,13 +8,17 @@ struct Material {
 uniform Material material;
 
 struct Light {
-    vec3  position;
+    vec4  position;
     vec3  direction;
     float cutOff;
+    float outerCutOff;
 
+    vec3 color;
+    
+    /*
     vec3 ambient;
     vec3 diffuse;
-    vec3 specular;
+    vec3 specular;*/
 };
 uniform Light light;
 
@@ -28,27 +31,31 @@ out vec4 outColor;
 
 void main() {
     // Ambient lighting (no change here)
-    vec3 ambient = light.ambient * material.diffuse * 0.1f;
+    vec3 ambient = light.color * material.diffuse;
 
     vec3 norm = normalize(normalWorld);
 
-    vec3 lightDir = normalize(light.position - fragmentWorld);
-    float theta = dot(lightDir, normalize(-light.direction));
+    vec3 lightDir = light.position.w == 0.0
+        ? normalize(- light.position.xyz)
+        : normalize(light.position.xyz - fragmentWorld);
+    float theta     = dot(lightDir, normalize(-light.direction));
+    float epsilon   = light.cutOff - light.outerCutOff;
+    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);    
 
     if(theta > light.cutOff) {
         float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = light.diffuse * (diff * material.diffuse);
+        vec3 diffuse = light.color * diff * material.diffuse * intensity;
 
         vec3 viewDir = normalize(cameraPosWorld - fragmentWorld);
-        vec3 reflectDir = reflect(-lightDir, norm);
-        float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
-        vec3 specular = light.specular * (spec * material.specular);
+        vec3 reflectDir = reflect(-lightDir.xyz, norm);
+        
+        float spec = max(0, pow(dot(reflectDir, viewDir) , material.shininess));
+        vec3 specular = light.color * spec * material.specular * intensity;
 
         vec3 finalColor = ambient + diffuse + specular;
-
         outColor = vec4(finalColor, 1.0);
    } else {
-        outColor = vec4(ambient, 1.0);
+        outColor = vec4(light.color * 0.5 * (material.diffuse * 0.1), 1.0);
   }
 }
 

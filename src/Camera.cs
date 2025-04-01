@@ -19,7 +19,6 @@ namespace Game3D
 
         private Vector3 _right = Vector3.UnitX;
         
-        public Vector3 dir;
         private float _pitch;
         private float _yaw = -MathHelper.PiOver2;
 

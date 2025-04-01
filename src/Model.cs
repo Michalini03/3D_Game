@@ -74,21 +74,23 @@ namespace Game3D
             Shader.SetUniform("model", translate);
 
             Shader.SetUniform("cameraPosWorld", camera.position);
-
             Material.SetUniforms(Shader);
 
             const float flashlightHeight = 2.05f;
             float depressionAngle = 2.0f;
 
 
-            Shader.SetUniform("light.position", new Vector3(camera.position.X, flashlightHeight, camera.position.Z));
+            Shader.SetUniform("light.position", new Vector4(camera.position.X, flashlightHeight, camera.position.Z, 1));
             Shader.SetUniform("light.direction", camera.Front);
-            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20.5f)));
+            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(25)));
+            Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(35)));
+            Shader.SetUniform("light.color", Vector3.One);
+            /**
             Shader.SetUniform("light.ambient", new Vector3(0.2f, 0.2f, 0.2f));
-            Shader.SetUniform("light.diffuse", new Vector3(0.7f, 0.7f, 0.7f));
-            Shader.SetUniform("light.specular", new Vector3(1.0f, 1.0f, 1.0f));
+            Shader.SetUniform("light.diffuse", new Vector3(0.5f, 0.5f, 0.5f));
+            Shader.SetUniform("light.specular", new Vector3(1.0f, 1.0f, 1.0f));*/
 
-            
+
 
 
             // Připojení bufferu

@@ -203,7 +203,7 @@ public class Program : GameWindow
 
             plane = new Plane(new Vector3(mapSizeX / 2f, 0f, mapSizeZ / 2f), mapSizeX, mapSizeZ);
             plane.Shader = new Shader("basic.vert", "basic.frag");
-            plane.Material = new Material() { diffuse = new Vector3(1f, 1f, 1f), specular = new Vector3(0.8f, 0.8f, 0.8f), shininess = 50 };
+            plane.Material = new Material() { diffuse = new Vector3(0.5f, 0.5f, 0.5f), specular = new Vector3(0.8f, 0.8f, 0.8f), shininess = 50 };
 
             collisions = new bool[mapSizeX / 2][];
             for (int i = 0; i < mapSizeX / 2; i++)
@@ -229,7 +229,7 @@ public class Program : GameWindow
                     {
                         walls.Add(new Wall(position));
                         walls[^1].Shader = new Shader("basic.vert", "basic.frag");
-                        walls[^1].Material = new Material() { diffuse = new Vector3(1f, 0f, 0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
+                        walls[^1].Material = new Material() { diffuse = new Vector3(0.8f, 0.2f, 0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
 
                         collisions[z][x] = true;
                     }
@@ -237,7 +237,7 @@ public class Program : GameWindow
                     {
                         doors.Add(new Door(position, x, z));
                         doors[^1].Shader = new Shader("basic.vert", "basic.frag");
-                        doors[^1].Material = new Material() { diffuse = new Vector3(0.7f, 0.5f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
+                        doors[^1].Material = new Material() { diffuse = new Vector3(0.5f, 0.3f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
 
                         collisions[z][x] = true;
                     }
