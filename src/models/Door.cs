@@ -21,20 +21,20 @@ namespace Zpg.models
 
             this.position = position;
             
-            vertices = new Vertex[]
+            Vertex[] vertices = new Vertex[]
             {
-            new Vertex(new Vector3(-1.0f, 0.0f, -1.0f)), // 0
-            new Vertex(new Vector3(1.0f, 0.0f, -1.0f)),  // 1
-            new Vertex(new Vector3(1.0f, 0.0f, 1.0f)),   // 2
-            new Vertex(new Vector3(-1.0f, 0.0f, 1.0f)),  // 3
+            new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), Vector3.Zero), // 0
+            new Vertex(new Vector3(1.0f, 0.0f, -1.0f), Vector3.Zero),  // 1
+            new Vertex(new Vector3(1.0f, 0.0f, 1.0f), Vector3.Zero),   // 2
+            new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), Vector3.Zero),  // 3
 
-            new Vertex(new Vector3(-1.0f, 3.0f, -1.0f)), // 4
-            new Vertex(new Vector3(1.0f, 3.0f, -1.0f)),  // 5
-            new Vertex(new Vector3(1.0f, 3.0f, 1.0f)),   // 6
-            new Vertex(new Vector3(-1.0f, 3.0f, 1.0f)),  // 7
+            new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), Vector3.Zero), // 4
+            new Vertex(new Vector3(1.0f, 3.0f, -1.0f), Vector3.Zero),  // 5
+            new Vertex(new Vector3(1.0f, 3.0f, 1.0f), Vector3.Zero),   // 6
+            new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), Vector3.Zero),  // 7
             };
 
-            indices = new int[]
+            int [] indices = new int[]
             {
             0, 1, 2, 2, 3, 0,
             
@@ -49,15 +49,10 @@ namespace Zpg.models
             1, 2, 6, 6, 5, 1
             };
 
-            Vertex.SimpleNormals(vertices, indices);
+            SimpleNormals(vertices, indices);
+            
+            Create(vertices, indices);
 
-            this.Material = new Material(
-                new Vector3(0.6f, 0.3f, 0.1f), // Ambient (hnědá barva)
-                new Vector3(0.9f, 0.5f, 0.5f), // Diffuse (hnědá barva)
-                new Vector3(0.2f, 0.1f, 0.05f), // Specular (nízký lesk)
-                4.0f                            // Shininess (nízký lesk)
-            );
-            Bind();
             this.indexX = indexX;
             this.indexZ = indexZ;
         }

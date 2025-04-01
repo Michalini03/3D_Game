@@ -21,16 +21,16 @@ namespace Zpg.models
             {
                 if (lines[cnt][0] != 'v') break;
             }
-            vertices = new Vertex[cnt];
+            Vertex[] vertices = new Vertex[cnt];
             for (int i = 0; i < cnt; i++)
             {
                 var tokens = lines[i].Split(' ');
                 float.TryParse(tokens[1], NumberStyles.Float, CultureInfo.InvariantCulture, out float x);
                 float.TryParse(tokens[2], NumberStyles.Float, CultureInfo.InvariantCulture, out float y);
                 float.TryParse(tokens[3], NumberStyles.Float, CultureInfo.InvariantCulture, out float z);
-                vertices[i] = new Vertex(new Vector3(x, y, z));
+                vertices[i] = new Vertex(new Vector3(x, y, z), Vector3.Zero);
             }
-            indices = new int[3 * (lines.Length - cnt)];
+            int[] indices = new int[3 * (lines.Length - cnt)];
             int k = 0;
             for (int i = cnt; i < lines.Length; i++)
             {
@@ -45,15 +45,9 @@ namespace Zpg.models
             }
 
             // Compute normals
-            Vertex.SimpleNormals(vertices, indices);
+            SimpleNormals(vertices, indices);
 
-            Material = new Material(
-                new Vector3(0.2f, 0.2f, 0.2f), // ambient
-                new Vector3(0.6f, 0.6f, 0.6f), // diffuse
-                new Vector3(0.8f, 0.8f, 0.8f), // specular
-                32.0f
-            );
-            Bind();
+            Create(vertices, indices);
         }
     }
 }

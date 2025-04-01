@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using System.Reflection;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
 using OpenTK.Windowing.Desktop;
@@ -202,6 +203,7 @@ public class Program : GameWindow
 
             plane = new Plane(new Vector3(mapSizeX / 2f, 0f, mapSizeZ / 2f), mapSizeX, mapSizeZ);
             plane.Shader = new Shader("basic.vert", "basic.frag");
+            plane.Material = new Material() { diffuse = new Vector3(1f, 1f, 1f), specular = new Vector3(0.8f, 0.8f, 0.8f), shininess = 50 };
 
             collisions = new bool[mapSizeX / 2][];
             for (int i = 0; i < mapSizeX / 2; i++)
@@ -227,12 +229,16 @@ public class Program : GameWindow
                     {
                         walls.Add(new Wall(position));
                         walls[^1].Shader = new Shader("basic.vert", "basic.frag");
+                        walls[^1].Material = new Material() { diffuse = new Vector3(1f, 0f, 0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
+
                         collisions[z][x] = true;
                     }
                     else if (cell >= 'A' && cell <= 'G')
                     {
                         doors.Add(new Door(position, x, z));
                         doors[^1].Shader = new Shader("basic.vert", "basic.frag");
+                        doors[^1].Material = new Material() { diffuse = new Vector3(0.7f, 0.5f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
+
                         collisions[z][x] = true;
                     }
                     else if (cell >= 'T' && cell <= 'Z')
@@ -241,6 +247,8 @@ public class Program : GameWindow
                         specialPosition.Y = 0;
                         collectibles.Add(new SimpleObj("coinBagTest.obj", specialPosition));
                         collectibles[^1].Shader = new Shader("basic.vert", "basic.frag");
+                        collectibles[^1].Material = new Material() { diffuse = new Vector3(0.7f, 0.5f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
+
                         collisions[z][x] = false;
                     }
                     else

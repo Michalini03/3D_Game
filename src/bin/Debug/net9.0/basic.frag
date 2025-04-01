@@ -28,7 +28,7 @@ out vec4 outColor;
 
 void main() {
     // Ambient lighting (no change here)
-    vec3 ambient = light.ambient * material.ambient;
+    vec3 ambient = light.ambient * material.diffuse * 0.1f;
 
     vec3 norm = normalize(normalWorld);
 
@@ -47,8 +47,8 @@ void main() {
         vec3 finalColor = ambient + diffuse + specular;
 
         outColor = vec4(finalColor, 1.0);
-    } else {
+   } else {
         outColor = vec4(ambient, 1.0);
-    }
+  }
 }
 

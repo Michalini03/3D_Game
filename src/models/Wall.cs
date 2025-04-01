@@ -16,26 +16,26 @@ namespace Zpg.models
 
             this.position = position;
             // Definování vrcholů sloupu (2x2 základna, výška 3)
-            vertices = new Vertex[]
+            Vertex[] vertices = new Vertex[]
             {
             // Dolní čtverec (y = 0)
-            new Vertex(new Vector3(-1.0f, 0.0f, -1.0f)), // 0
-            new Vertex(new Vector3(1.0f, 0.0f, -1.0f)),  // 1
-            new Vertex(new Vector3(1.0f, 0.0f, 1.0f)),   // 2
-            new Vertex(new Vector3(-1.0f, 0.0f, 1.0f)),  // 3
+            new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), Vector3.Zero), // 0
+            new Vertex(new Vector3(1.0f, 0.0f, -1.0f), Vector3.Zero),  // 1
+            new Vertex(new Vector3(1.0f, 0.0f, 1.0f), Vector3.Zero),   // 2
+            new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), Vector3.Zero),  // 3
 
             // Horní čtverec (y = 3)
-            new Vertex(new Vector3(-1.0f, 3.0f, -1.0f)), // 4
-            new Vertex(new Vector3(1.0f, 3.0f, -1.0f)),  // 5
-            new Vertex(new Vector3(1.0f, 3.0f, 1.0f)),   // 6
-            new Vertex(new Vector3(-1.0f, 3.0f, 1.0f)),  // 7
+            new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), Vector3.Zero), // 4
+            new Vertex(new Vector3(1.0f, 3.0f, -1.0f), Vector3.Zero),  // 5
+            new Vertex(new Vector3(1.0f, 3.0f, 1.0f), Vector3.Zero),   // 6
+            new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), Vector3.Zero),  // 7
             };
 
             // Indexy pro kreslení trojúhelníků (6 stěn, 2 trojúhelníky na každé)
-            indices = new int[]
+            int[] indices = new int[]
             {
             // Spodní stěna
-            0, 1, 2, 2, 3, 0,
+            0, 1, 2, 0, 2, 3,
             
             // Horní stěna
             4, 5, 6, 6, 7, 4,
@@ -53,15 +53,8 @@ namespace Zpg.models
             1, 2, 6, 6, 5, 1
             };
 
-            Vertex.SimpleNormals(vertices, indices);
-
-            this.Material = new Material(
-                new Vector3(0.2f, 0.2f, 0.2f), // Ambient (šedá barva)
-                new Vector3(1.0f, 0.0f, 0.0f), // Diffuse (červená barva)
-                new Vector3(1.0f, 0.0f, 0.0f), // Specular (červená barva)
-                32.0f                          // Shininess (lesk)
-            );
-            Bind();
+            SimpleNormals(vertices, indices);
+            Create(vertices, indices);
         }
     }
 }

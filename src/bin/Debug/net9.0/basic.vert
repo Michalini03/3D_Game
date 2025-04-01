@@ -13,6 +13,6 @@ out vec3 fragmentWorld;
 void main() {
     gl_Position = projection * view * model * vec4(position, 1.0);
     fragmentWorld = vec3(model*vec4(position, 1.0));
-    normalWorld = normal * mat3(transpose(inverse(model)));
+    normalWorld = mat3(transpose(inverse(model))) * normal;
 }
 

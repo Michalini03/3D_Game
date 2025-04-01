@@ -19,23 +19,23 @@ namespace Zpg.models
             float halfHeight = height / 2.0f;
 
             // Definujeme vrcholy pro "tlustou" podlahu
-            vertices = new Vertex[]
+            Vertex[] vertices = new Vertex[]
             {
             // Horní vrstva
-            new Vertex(new Vector3(-halfX, halfHeight, -halfZ)), // 0
-            new Vertex(new Vector3( halfX, halfHeight, -halfZ)), // 1
-            new Vertex(new Vector3( halfX, halfHeight,  halfZ)), // 2
-            new Vertex(new Vector3(-halfX, halfHeight,  halfZ)), // 3
+            new Vertex(new Vector3(-halfX, halfHeight, -halfZ), new Vector3(0, 1, 0)), // 0
+            new Vertex(new Vector3( halfX, halfHeight, -halfZ), new Vector3(0, 1, 0)), // 1
+            new Vertex(new Vector3( halfX, halfHeight,  halfZ), new Vector3(0, 1, 0)), // 2
+            new Vertex(new Vector3(-halfX, halfHeight,  halfZ), new Vector3(0, 1, 0)), // 3
 
             // Spodní vrstva
-            new Vertex(new Vector3(-halfX, -halfHeight, -halfZ)), // 4
-            new Vertex(new Vector3( halfX, -halfHeight, -halfZ)), // 5
-            new Vertex(new Vector3( halfX, -halfHeight,  halfZ)), // 6
-            new Vertex(new Vector3(-halfX, -halfHeight,  halfZ)), // 7
+            new Vertex(new Vector3(-halfX, -halfHeight, -halfZ), new Vector3(0, 1, 0)), // 4
+            new Vertex(new Vector3( halfX, -halfHeight, -halfZ), new Vector3(0, 1, 0)), // 5
+            new Vertex(new Vector3( halfX, -halfHeight,  halfZ), new Vector3(0, 1, 0)), // 6
+            new Vertex(new Vector3(-halfX, -halfHeight,  halfZ), new Vector3(0, 1, 0)), // 7
             };
 
             // Definujeme indexy pro vykreslení kvádru pomocí trojúhelníků
-            indices = new int[]
+            int[] indices = new int[]
             {
             // Horní strana
             0, 1, 2,  2, 3, 0,
@@ -56,18 +56,8 @@ namespace Zpg.models
             1, 2, 6,  6, 5, 1
             };
 
-            Vertex.SimpleNormals(vertices, indices);
-
-            // Material settings (diffuse, specular, shininess)
-            this.Material = new Material(
-                new Vector3(0.2f, 0.2f, 0.2f), // Ambient (šedá)
-                new Vector3(1f, 1f, 1f), // Diffuse (šedá)
-                new Vector3(0.8f, 0.8f, 0.8f), // Specular (světle šedá, lesk)
-                16.0f                          // Shininess (lesklost)
-            );
-
             // Bind the model (upload data to GPU)
-            Bind();
+            Create(vertices, indices);
         }
     }
 }

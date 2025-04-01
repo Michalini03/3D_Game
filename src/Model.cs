@@ -19,9 +19,6 @@ namespace Game3D
     /// </summary>
     public class Model : IDisposable
     {
-        public Vertex[] vertices { get; set; }
-        public int[] indices   { get; set; }
-
         public Shader Shader { get; set; }
 
         public Material Material { get; set; }
@@ -34,35 +31,33 @@ namespace Game3D
 
         public int triangles;
 
-        public void Bind()
+        protected void Create(Vertex[] vertices, int[] indices)
         {
-            {
-                triangles = indices.Length / 3;
+            triangles = indices.Length / 3;
 
-                // vytvoření a připojení VAO
-                GL.GenVertexArrays(1, out vao);
-                GL.BindVertexArray(vao);
+            // vytvoření a připojení VAO
+            GL.GenVertexArrays(1, out vao);
+            GL.BindVertexArray(vao);
 
-                // Vytvoření a připojení VBO
-                vbo = GL.GenBuffer();
+            // Vytvoření a připojení VBO
+            vbo = GL.GenBuffer();
 
-                GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
-                GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * Vertex.SizeOf(), vertices, BufferUsageHint.StaticDraw);
+            GL.BindBuffer(BufferTarget.ArrayBuffer, vbo);
+            GL.BufferData(BufferTarget.ArrayBuffer, vertices.Length * Vertex.SizeOf(), vertices, BufferUsageHint.StaticDraw);
 
-                // vytvoření a připojení IBO
-                ibo = GL.GenBuffer();
-                GL.BindBuffer(BufferTarget.ElementArrayBuffer, ibo);
+            // vytvoření a připojení IBO
+            ibo = GL.GenBuffer();
+            GL.BindBuffer(BufferTarget.ElementArrayBuffer, ibo);
 
-                GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(int), indices, BufferUsageHint.StaticDraw);
+            GL.BufferData(BufferTarget.ElementArrayBuffer, indices.Length * sizeof(int), indices, BufferUsageHint.StaticDraw);
 
-                // namapování pointerů na lokace v shaderu + normaly + zapnuti odpovidajiciho atributu
-                GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vertex.SizeOf(), IntPtr.Zero);
-                GL.EnableVertexAttribArray(0);
-                GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vertex.SizeOf(), (IntPtr)3 * sizeof(float));
-                GL.EnableVertexAttribArray(1);
+            // namapování pointerů na lokace v shaderu
+            GL.VertexAttribPointer(0, 3, VertexAttribPointerType.Float, false, Vertex.SizeOf(), IntPtr.Zero);
+            GL.EnableVertexAttribArray(0);
+            GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vertex.SizeOf(), (IntPtr)3 * sizeof(float));
+            GL.EnableVertexAttribArray(1);
 
-                GL.BindVertexArray(0);
-            }
+            GL.BindVertexArray(0);
         }
 
 
@@ -106,6 +101,26 @@ namespace Game3D
             // Vykreslení pole vrcholů
             GL.DrawElements(PrimitiveType.Triangles, 3*triangles, DrawElementsType.UnsignedInt, IntPtr.Zero);
             GL.BindVertexArray(0);
+        }
+
+        public static void SimpleNormals(Vertex[] vertices, int[] indices)
+        {
+            for (int i = 0; i < indices.Length; i += 3)
+            {
+                Vector3 v1 = vertices[indices[i + 1]].position - vertices[indices[i]].position;
+                Vector3 v2 = vertices[indices[i + 2]].position - vertices[indices[i]].position;
+
+                Vector3 norm = Vector3.Cross(v1, v2).Normalized();
+
+                vertices[indices[i]].normal += norm;
+                vertices[indices[i + 1]].normal += norm;
+                vertices[indices[i + 2]].normal += norm;
+            }
+
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i].normal.Normalize();
+            }
         }
 
         #region Dispose - uvolnění paměti
