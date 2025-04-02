@@ -59,17 +59,17 @@ namespace Zpg.models
 
         public bool Check(Camera player, bool[][] collisions)
         {
-            if ((int)player.position.X/2 == indexX && ((int)player.position.Z/2 - 1 == indexZ || (int)player.position.Z / 2 + 1 == indexZ))
+            if ((int)player.pos.X/2 == indexX && ((int)player.pos.Z/2 - 1 == indexZ || (int)player.pos.Z / 2 + 1 == indexZ))
             {
                 collisions[indexZ][indexX] = false;
                 return true;
             }
-            else if ((int)player.position.Z / 2 == indexZ && ((int)player.position.X / 2 - 1 == indexX || (int)player.position.X / 2 + 1 == indexX))
+            else if ((int)player.pos.Z / 2 == indexZ && ((int)player.pos.X / 2 - 1 == indexX || (int)player.pos.X / 2 + 1 == indexX))
             {
                 collisions[indexZ][indexX] = false;
                 return true;
             }
-            Console.WriteLine("Player X: " + (int)player.position.X / 2 + " Z: " + (int)player.position.Z / 2 + "; Doors X: " + indexX + "Z: " + indexZ);
+            Console.WriteLine("Player X: " + (int)player.pos.X / 2 + " Z: " + (int)player.pos.Z / 2 + "; Doors X: " + indexX + "Z: " + indexZ);
             return false;
         }
     }

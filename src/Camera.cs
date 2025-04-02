@@ -1,4 +1,5 @@
-﻿using OpenTK.Graphics.OpenGL;
+﻿using Game3D;
+using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using System;
 using System.Collections.Generic;
@@ -6,86 +7,166 @@ using System.Linq;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
-
-namespace Game3D
+namespace Zpg
 {
     public class Camera
     {
-        const float depressionAngle = 2.0f;
-
-        private Vector3 _front = -Vector3.UnitZ;
-
-        private Vector3 _up = Vector3.UnitY;
-
-        private Vector3 _right = Vector3.UnitX;
-        
-        private float _pitch;
-        private float _yaw = -MathHelper.PiOver2;
-
-        private float _fov = MathHelper.PiOver2;
-
+        private float zoom = 1;
+        public Vector3 pos = new Vector3(0, 0, 5);
+        public float rx = 0;
+        public float ry = 0;
         public float speed = 1.4f;
         public float sensitivity = 1;
-        
-        public bool[][] collisions { get; set;}
-
         public Viewport viewport;
-        public Camera(Viewport viewport, Vector3 pos)
+
+        // Add the front vector property
+        public Vector3 Front
         {
-            this.viewport = viewport;
-            this.position = pos;
+            get
+            {
+                // Calculate direction vector based on rotation angles
+                Vector3 direction = new Vector3();
+                direction.X = (float)(Math.Cos(rx) * Math.Sin(ry));
+                direction.Y = -(float)(Math.Sin(rx));  // Removed the negative sign here
+                direction.Z = -(float)(Math.Cos(rx) * Math.Cos(ry));
+                return direction.Normalized();
+            }
         }
 
-        public Vector3 position { get; set; }
+        public Camera(Viewport viewport)
+        {
+            this.viewport = viewport;
+        }
 
         public virtual Matrix4 Projection
         {
             get
             {
                 float ratio = (float)((viewport.Width * viewport.window.ClientSize.X) / (viewport.Height * viewport.window.ClientSize.Y));
-                return Matrix4.CreatePerspectiveFieldOfView(_fov, ratio, 0.1f, 50);
+                return Matrix4.CreatePerspectiveFieldOfView(zoom, ratio, 0.1f, 50);
             }
         }
 
-        public Vector3 Front => _front;
-
-        public Vector3 Up => _up;
-
-        public Vector3 Right => _right;
-
-        public float Pitch
+        public void Zoom(float coef)
         {
-            get => MathHelper.RadiansToDegrees(_pitch);
-            set
+            //zoom *= coef;
+            zoom += coef / 10.0f;
+            zoom = Math.Max(0.2f, Math.Min(2, zoom));
+            Console.WriteLine(zoom);
+        }
+
+        public void Move(float xdt, float ydt, bool[][] collision)
+        {
+            // Calculate potential new position
+            float newPosX = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
+            float newPosZ = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
+
+            // Player collision radius (adjust as needed)
+            float collisionRadius = 0.20f;
+
+            // Try to move separately on X and Z axes for wall sliding
+            bool canMoveX = true;
+            bool canMoveZ = true;
+
+            // Check X movement
+            float testPosX = newPosX;
+            float testPosZ = pos.Z;
+
+            // Check collision on X axis movement
+            int colIndexX = (int)(testPosX / 2);
+            int rowIndexX = (int)(testPosZ / 2);
+
+            // Check surrounding cells for radius-based collision on X axis
+            for (int r = -1; r <= 1; r++)
             {
-                // We clamp the pitch value between -89 and 89 to prevent the camera from going upside down, and a bunch
-                // of weird "bugs" when you are using euler angles for rotation.
-                // If you want to read more about this you can try researching a topic called gimbal lock
-                var angle = MathHelper.Clamp(value, -89f, 89f);
-                _pitch = MathHelper.DegreesToRadians(angle);
-                MathHelper.DegreesToRadians(depressionAngle);
-                UpdateVectors();
+                for (int c = -1; c <= 1; c++)
+                {
+                    int checkRow = rowIndexX + r;
+                    int checkCol = colIndexX + c;
+
+                    if (checkRow >= 0 && checkRow < collision.Length &&
+                        checkCol >= 0 && checkCol < collision[checkRow].Length &&
+                        collision[checkRow][checkCol])
+                    {
+                        // Calculate center of the cell
+                        float cellCenterX = (checkCol * 2) + 1;
+                        float cellCenterZ = (checkRow * 2) + 1;
+
+                        // Calculate distance from player to cell center
+                        float distX = Math.Abs(testPosX - cellCenterX);
+                        float distZ = Math.Abs(testPosZ - cellCenterZ);
+
+                        // If too close to wall center, block X movement
+                        if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                        {
+                            canMoveX = false;
+                            break;
+                        }
+                    }
+                }
+                if (!canMoveX) break;
+            }
+
+            // Check Z movement
+            testPosX = pos.X;
+            testPosZ = newPosZ;
+
+            // Check collision on Z axis movement
+            int colIndexZ = (int)(testPosX / 2);
+            int rowIndexZ = (int)(testPosZ / 2);
+
+            // Check surrounding cells for radius-based collision on Z axis
+            for (int r = -1; r <= 1; r++)
+            {
+                for (int c = -1; c <= 1; c++)
+                {
+                    int checkRow = rowIndexZ + r;
+                    int checkCol = colIndexZ + c;
+
+                    if (checkRow >= 0 && checkRow < collision.Length &&
+                        checkCol >= 0 && checkCol < collision[checkRow].Length &&
+                        collision[checkRow][checkCol])
+                    {
+                        // Calculate center of the cell
+                        float cellCenterX = (checkCol * 2) + 1;
+                        float cellCenterZ = (checkRow * 2) + 1;
+
+                        // Calculate distance from player to cell center
+                        float distX = Math.Abs(testPosX - cellCenterX);
+                        float distZ = Math.Abs(testPosZ - cellCenterZ);
+
+                        // If too close to wall center, block Z movement
+                        if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                        {
+                            canMoveZ = false;
+                            break;
+                        }
+                    }
+                }
+                if (!canMoveZ) break;
+            }
+
+            // Apply movement based on what's allowed
+            if (canMoveX)
+            {
+                pos.X = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
+            }
+
+            if (canMoveZ)
+            {
+                pos.Z = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
             }
         }
 
-        public float Yaw
+        public void RotateX(float a)
         {
-            get => MathHelper.RadiansToDegrees(_yaw);
-            set
-            {
-                _yaw = MathHelper.DegreesToRadians(value);
-                UpdateVectors();
-            }
+            rx += a * sensitivity;
+            rx = (float)Math.Max(-Math.PI / 2, Math.Min(Math.PI / 2, rx));
         }
 
-        public float Fov
+        public void RotateY(float a)
         {
-            get => MathHelper.RadiansToDegrees(_fov);
-            set
-            {
-                var angle = MathHelper.Clamp(value, 1f, 90f);
-                _fov = MathHelper.DegreesToRadians(angle);
-            }
+            ry += a * sensitivity;
         }
 
         public virtual Matrix4 View
@@ -93,22 +174,12 @@ namespace Game3D
             get
             {
                 Matrix4 view;
-                view = Matrix4.LookAt(position, position + _front, _up);
+                view = Matrix4.Identity;
+                view *= Matrix4.CreateTranslation(-pos);
+                view *= Matrix4.CreateRotationY(ry);
+                view *= Matrix4.CreateRotationX(rx);
                 return view;
             }
-
-        }
-
-        private void UpdateVectors()
-        {
-            _front.X = MathF.Cos(_pitch) * MathF.Cos(_yaw);
-            _front.Y = MathF.Sin(_pitch);
-            _front.Z = MathF.Cos(_pitch) * MathF.Sin(_yaw);
-
-            _front = Vector3.Normalize(_front);
-
-            _right = Vector3.Normalize(Vector3.Cross(_front, Vector3.UnitY));
-            _up = Vector3.Normalize(Vector3.Cross(_right, _front));
         }
     }
 }

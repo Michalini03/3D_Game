@@ -30,32 +30,31 @@ in vec3 fragmentWorld;
 out vec4 outColor;
 
 void main() {
-    // Ambient lighting (no change here)
-    vec3 ambient = light.color * material.diffuse;
-
+    // Get normalized directions
     vec3 norm = normalize(normalWorld);
-
     vec3 lightDir = light.position.w == 0.0
-        ? normalize(- light.position.xyz)
+        ? normalize(-light.position.xyz)
         : normalize(light.position.xyz - fragmentWorld);
-    float theta     = dot(lightDir, normalize(-light.direction));
-    float epsilon   = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);    
-
-    if(theta > light.cutOff) {
-        float diff = max(dot(norm, lightDir), 0.0);
-        vec3 diffuse = light.color * diff * material.diffuse * intensity;
-
-        vec3 viewDir = normalize(cameraPosWorld - fragmentWorld);
-        vec3 reflectDir = reflect(-lightDir.xyz, norm);
-        
-        float spec = max(0, pow(dot(reflectDir, viewDir) , material.shininess));
-        vec3 specular = light.color * spec * material.specular * intensity;
-
-        vec3 finalColor = ambient + diffuse + specular;
-        outColor = vec4(finalColor, 1.0);
-   } else {
-        outColor = vec4(light.color * 0.5 * (material.diffuse * 0.1), 1.0);
-  }
+    
+    // Calculate spotlight effect
+    float theta = dot(lightDir, normalize(-light.direction));
+    float intensity = smoothstep(light.outerCutOff, light.cutOff, theta);
+    
+    // Ambient lighting (apply intensity to ambient too)
+    vec3 ambient = light.color * material.diffuse * intensity;
+    
+    // Diffuse lighting
+    float diff = max(dot(norm, lightDir), 0.0);
+    vec3 diffuse = light.color * diff * material.diffuse * intensity;
+    
+    // Specular lighting
+    vec3 viewDir = normalize(cameraPosWorld - fragmentWorld);
+    vec3 reflectDir = reflect(-lightDir, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), material.shininess);
+    vec3 specular = light.color * spec * material.specular * intensity;
+    
+    // Combine results
+    vec3 finalColor = ambient + diffuse + specular;
+    outColor = vec4(finalColor, 1.0);
 }
 

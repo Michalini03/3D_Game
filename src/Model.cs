@@ -73,17 +73,17 @@ namespace Game3D
             Shader.SetUniform("view", camera.View);
             Shader.SetUniform("model", translate);
 
-            Shader.SetUniform("cameraPosWorld", camera.position);
+            Shader.SetUniform("cameraPosWorld", camera.pos);
             Material.SetUniforms(Shader);
 
             const float flashlightHeight = 2.05f;
             float depressionAngle = 2.0f;
 
 
-            Shader.SetUniform("light.position", new Vector4(camera.position.X, flashlightHeight, camera.position.Z, 1));
+            Shader.SetUniform("light.position", new Vector4(camera.pos.X, flashlightHeight, camera.pos.Z, 1));
             Shader.SetUniform("light.direction", camera.Front);
-            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(25)));
-            Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(35)));
+            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(15)));
+            Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20)));
             Shader.SetUniform("light.color", Vector3.One);
             /**
             Shader.SetUniform("light.ambient", new Vector3(0.2f, 0.2f, 0.2f));

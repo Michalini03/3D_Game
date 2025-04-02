@@ -133,23 +133,12 @@ public class Program : GameWindow
         const float cameraHeight = 1.7f;
         const float sensitivity = 0.2f;
 
-        if (input.IsKeyDown(Keys.W))
-        {
-            mainCamera.position += mainCamera.Front * cameraSpeed * (float)e.Time; // Forward
-        }
+        if (KeyboardState.IsKeyDown(Keys.W)) direction += Vector2.UnitY;
+        if (KeyboardState.IsKeyDown(Keys.S)) direction -= Vector2.UnitY;
+        if (KeyboardState.IsKeyDown(Keys.A)) direction -= Vector2.UnitX;
+        if (KeyboardState.IsKeyDown(Keys.D)) direction += Vector2.UnitX;
 
-        if (input.IsKeyDown(Keys.S))
-        {
-            mainCamera.position -= mainCamera.Front * cameraSpeed * (float)e.Time; // Backwards
-        }
-        if (input.IsKeyDown(Keys.A))
-        {
-            mainCamera.position -= mainCamera.Right * cameraSpeed * (float)e.Time; // Left
-        }
-        if (input.IsKeyDown(Keys.D))
-        {
-            mainCamera.position += mainCamera.Right * cameraSpeed * (float)e.Time; // Right
-        }
+
 
         if (input.IsKeyDown(Keys.E))
         {
@@ -164,31 +153,35 @@ public class Program : GameWindow
             }
         }
 
-        mainCamera.position = new Vector3(mainCamera.position.X, cameraHeight, mainCamera.position.Z);
-        var mouse = MouseState;
-
-        if (_firstMove)
+        var len = direction.Length;
+        if (len > 0)
         {
-            _lastPos = new Vector2(mouse.X, mouse.Y);
-            _firstMove = false;
+            direction *= (float)e.Time / len;
+            mainCamera.Move(direction.X, direction.Y, collisions);
         }
-        else
-        {
-            var deltaX = mouse.X - _lastPos.X;
-            var deltaY = mouse.Y - _lastPos.Y;
-            _lastPos = new Vector2(mouse.X, mouse.Y);
 
-            mainCamera.Yaw += deltaX * sensitivity;
-            mainCamera.Pitch -= deltaY * sensitivity;
+        if (mouseDelta.LengthSquared > 0.00001)
+        {
+            mainCamera.RotateX(mouseDelta.Y * (float)e.Time);
+            mainCamera.RotateY(mouseDelta.X * (float)e.Time);
+            mouseDelta = Vector2.Zero;
         }
+
     }
 
     protected override void OnMouseWheel(MouseWheelEventArgs e)
     {
         base.OnMouseWheel(e);
 
-        mainCamera.Fov -= e.OffsetY;
+        mainCamera.Zoom(-e.OffsetY);
     }
+
+    Vector2 mouseDelta;
+    protected override void OnMouseMove(MouseMoveEventArgs e)
+    {
+        mouseDelta += new Vector2(e.DeltaX, e.DeltaY);
+    }
+
 
     // Loads the map from .md file
     protected void LoadMap(string filename)
@@ -222,7 +215,8 @@ public class Program : GameWindow
                     if (cell == '@')
                     {
                         Vector3 spawnPosition = new Vector3(position.X, PLAYER_VIEW, position.Z);
-                        mainCamera = new Camera(mainViewport, spawnPosition);
+                        mainCamera = new Camera(mainViewport);
+                        mainCamera.pos = spawnPosition;
                         collisions[z][x] = false;
                     }
                     else if (cell >= 'o' && cell <= 'z')
