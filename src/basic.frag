@@ -38,9 +38,8 @@ void main() {
     vec3 lightDir = light.position.w == 0.0
         ? normalize(- light.position.xyz)
         : normalize(light.position.xyz - fragmentWorld);
-    float theta     = dot(lightDir, normalize(-light.direction));
-    float epsilon   = light.cutOff - light.outerCutOff;
-    float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0, 1.0);    
+    float theta = dot(lightDir, normalize(-light.direction));
+    float intensity = smoothstep(light.outerCutOff, light.cutOff, theta);    
 
     if(theta > light.cutOff) {
         float diff = max(dot(norm, lightDir), 0.0);
