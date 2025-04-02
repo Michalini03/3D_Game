@@ -41,7 +41,7 @@ void main() {
     float theta = dot(lightDir, normalize(-light.direction));
     float intensity = smoothstep(light.outerCutOff, light.cutOff, theta);    
 
-    if(theta > light.cutOff) {
+    if(theta > light.outerCutOff) {
         float diff = max(dot(norm, lightDir), 0.0);
         vec3 diffuse = light.color * diff * material.diffuse * intensity;
 
