@@ -57,11 +57,9 @@ namespace Zpg
 
         public void Move(float xdt, float ydt, bool[][] collision)
         {
-            // Calculate potential new position
             float newPosX = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
             float newPosZ = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
 
-            // Player collision radius (adjust as needed)
             float collisionRadius = 0.20f;
 
             // Try to move separately on X and Z axes for wall sliding
