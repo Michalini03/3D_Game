@@ -10,8 +10,8 @@ namespace Zpg
 {
     public class Material
     {
-        public Vector3 diffuse = new Vector3(0.5f, 0.01f, 0.01f);
-        public Vector3 specular = new Vector3(0.8f);
+        public Vector3 diffuse = new Vector3(0.5f, 0.5f, 0.5f);
+        public Vector3 specular = new Vector3(0.8f, 0.8f, 0.8f);
         public float shininess = 32.0f;
 
         public void SetUniforms(Shader shader)

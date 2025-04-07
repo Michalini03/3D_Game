@@ -64,7 +64,7 @@ namespace Game3D
         /// <summary>
         /// Vykreslení modelu
         /// </summary>
-        public void Draw(Camera camera)
+        public void Draw(Camera camera, bool toogle)
         {
             Matrix4 translate = Matrix4.CreateTranslation((float)position.X, (float)position.Y, (float)position.Z);
 
@@ -84,14 +84,14 @@ namespace Game3D
             Shader.SetUniform("light.direction", camera.Front);
             Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(15)));
             Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20)));
-            Shader.SetUniform("light.color", Vector3.One);
+            if (toogle)
+                Shader.SetUniform("light.color", Vector3.One);
+            else
+                Shader.SetUniform("light.color", Vector3.Zero);
             /**
             Shader.SetUniform("light.ambient", new Vector3(0.2f, 0.2f, 0.2f));
             Shader.SetUniform("light.diffuse", new Vector3(0.5f, 0.5f, 0.5f));
             Shader.SetUniform("light.specular", new Vector3(1.0f, 1.0f, 1.0f));*/
-
-
-
 
             // Připojení bufferu
             GL.BindVertexArray(vao);
@@ -107,21 +107,38 @@ namespace Game3D
 
         public static void SimpleNormals(Vertex[] vertices, int[] indices)
         {
+            for (int i = 0; i < vertices.Length; i++)
+            {
+                vertices[i].normal = Vector3.Zero;
+            }
+
             for (int i = 0; i < indices.Length; i += 3)
             {
-                Vector3 v1 = vertices[indices[i + 1]].position - vertices[indices[i]].position;
-                Vector3 v2 = vertices[indices[i + 2]].position - vertices[indices[i]].position;
+                int i0 = indices[i];
+                int i1 = indices[i + 1];
+                int i2 = indices[i + 2];
+
+                Vector3 v1 = vertices[i1].position - vertices[i0].position;
+                Vector3 v2 = vertices[i2].position - vertices[i0].position;
 
                 Vector3 norm = Vector3.Cross(v1, v2).Normalized();
 
-                vertices[indices[i]].normal += norm;
-                vertices[indices[i + 1]].normal += norm;
-                vertices[indices[i + 2]].normal += norm;
+                vertices[i0].normal += norm;
+                vertices[i1].normal += norm;
+                vertices[i2].normal += norm;
             }
 
+            // Normalize the accumulated normals
             for (int i = 0; i < vertices.Length; i++)
             {
-                vertices[i].normal.Normalize();
+                if (vertices[i].normal.LengthSquared > 0.0001f)
+                {
+                    vertices[i].normal.Normalize();
+                }
+                else
+                {
+                    vertices[i].normal = new Vector3(0, 1, 0); // Fallback
+                }
             }
         }
 

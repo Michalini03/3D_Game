@@ -20,39 +20,56 @@ namespace Zpg.models
             this.indexZ = indexZ;
 
             this.position = position;
-            
+
             Vertex[] vertices = new Vertex[]
             {
-            new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), Vector3.Zero), // 0
-            new Vertex(new Vector3(1.0f, 0.0f, -1.0f), Vector3.Zero),  // 1
-            new Vertex(new Vector3(1.0f, 0.0f, 1.0f), Vector3.Zero),   // 2
-            new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), Vector3.Zero),  // 3
-
-            new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), Vector3.Zero), // 4
-            new Vertex(new Vector3(1.0f, 3.0f, -1.0f), Vector3.Zero),  // 5
-            new Vertex(new Vector3(1.0f, 3.0f, 1.0f), Vector3.Zero),   // 6
-            new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), Vector3.Zero),  // 7
+                new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), new Vector3(0, -1, 0)),
+                new Vertex(new Vector3(1.0f, 0.0f, -1.0f), new Vector3(0, -1, 0)),
+                new Vertex(new Vector3(1.0f, 0.0f, 1.0f), new Vector3(0, -1, 0)),
+                new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), new Vector3(0, -1, 0)),
+        
+                new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), new Vector3(0, 1, 0)),
+                new Vertex(new Vector3(1.0f, 3.0f, -1.0f), new Vector3(0, 1, 0)),
+                new Vertex(new Vector3(1.0f, 3.0f, 1.0f), new Vector3(0, 1, 0)),
+                new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), new Vector3(0, 1, 0)),
+        
+                new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), new Vector3(0, 0, -1)),
+                new Vertex(new Vector3(1.0f, 0.0f, -1.0f), new Vector3(0, 0, -1)),
+                new Vertex(new Vector3(1.0f, 3.0f, -1.0f), new Vector3(0, 0, -1)),
+                new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), new Vector3(0, 0, -1)),
+        
+                new Vertex(new Vector3(1.0f, 0.0f, 1.0f), new Vector3(0, 0, 1)),
+                new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), new Vector3(0, 0, 1)),
+                new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), new Vector3(0, 0, 1)),
+                new Vertex(new Vector3(1.0f, 3.0f, 1.0f), new Vector3(0, 0, 1)),
+        
+                new Vertex(new Vector3(-1.0f, 0.0f, 1.0f), new Vector3(-1, 0, 0)),
+                new Vertex(new Vector3(-1.0f, 0.0f, -1.0f), new Vector3(-1, 0, 0)),
+                new Vertex(new Vector3(-1.0f, 3.0f, -1.0f), new Vector3(-1, 0, 0)),
+                new Vertex(new Vector3(-1.0f, 3.0f, 1.0f), new Vector3(-1, 0, 0)),
+        
+                new Vertex(new Vector3(1.0f, 0.0f, -1.0f), new Vector3(1, 0, 0)),
+                new Vertex(new Vector3(1.0f, 0.0f, 1.0f), new Vector3(1, 0, 0)),
+                new Vertex(new Vector3(1.0f, 3.0f, 1.0f), new Vector3(1, 0, 0)),
+                new Vertex(new Vector3(1.0f, 3.0f, -1.0f), new Vector3(1, 0, 0)),
             };
 
-            int [] indices = new int[]
+            int[] indices = new int[]
             {
-            0, 1, 2, 2, 3, 0,
-            
-            4, 5, 6, 6, 7, 4,
-
-            0, 1, 5, 5, 4, 0,
-
-            2, 3, 7, 7, 6, 2,
-
-            0, 3, 7, 7, 4, 0,
-
-            1, 2, 6, 6, 5, 1
+                0, 1, 2, 0, 2, 3,
+        
+                4, 6, 5, 4, 7, 6,
+        
+                8, 9, 10, 8, 10, 11,
+        
+                12, 13, 14, 12, 14, 15,
+        
+                16, 17, 18, 16, 18, 19,
+        
+                20, 21, 22, 20, 22, 23
             };
 
-            SimpleNormals(vertices, indices);
-            
             Create(vertices, indices);
-
             this.indexX = indexX;
             this.indexZ = indexZ;
         }

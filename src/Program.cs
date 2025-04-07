@@ -36,6 +36,7 @@ public class Program : GameWindow
 
     Light light;
     bool grabbed;
+    bool toogle;
 
     int mapSizeX;
     int mapSizeZ;
@@ -61,6 +62,8 @@ public class Program : GameWindow
 
         CursorState = CursorState.Grabbed;
         grabbed = true;
+
+        toogle = true;
 
         mainViewport = new Viewport()
         {
@@ -102,18 +105,18 @@ public class Program : GameWindow
         }
 
         GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
-        plane.Draw(mainCamera);
+        plane.Draw(mainCamera, toogle);
         for (int i = 0; i < walls.Count; i++)
         {
-            walls[i].Draw(mainCamera);
+            walls[i].Draw(mainCamera, toogle);
         }
         for (int i = 0; i < doors.Count; i++)
         {
-            if(!doors[i].open) doors[i].Draw(mainCamera);
+            if(!doors[i].open) doors[i].Draw(mainCamera, toogle);
         }
         for (int i = 0; i < collectibles.Count; i++)
         {
-            collectibles[i].Draw(mainCamera);
+            collectibles[i].Draw(mainCamera, toogle);
         }
         SwapBuffers();
     }
@@ -138,9 +141,9 @@ public class Program : GameWindow
         if (KeyboardState.IsKeyDown(Keys.A)) direction -= Vector2.UnitX;
         if (KeyboardState.IsKeyDown(Keys.D)) direction += Vector2.UnitX;
 
+        if (KeyboardState.IsKeyPressed(Keys.F)) toogle = !toogle;
 
-
-        if (input.IsKeyDown(Keys.E))
+        if (input.IsKeyPressed(Keys.E))
         {
             for (int i = 0; i < doors.Count; i++)
             {
