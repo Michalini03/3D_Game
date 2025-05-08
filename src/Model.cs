@@ -79,9 +79,17 @@ namespace Game3D
             const float flashlightHeight = 2.05f;
             float depressionAngle = 2.0f;
 
+            float depressionRad = depressionAngle * (float)Math.PI / 180.0f;
+
+            Vector3 rotatedDirection = new Vector3(
+                camera.Front.X,
+                camera.Front.Y * (float)Math.Cos(depressionRad) - camera.Front.Z * (float)Math.Sin(depressionRad),
+                camera.Front.Y * (float)Math.Sin(depressionRad) + camera.Front.Z * (float)Math.Cos(depressionRad)
+            );
+            rotatedDirection = Vector3.Normalize(rotatedDirection);
 
             Shader.SetUniform("light.position", new Vector4(camera.pos.X, flashlightHeight, camera.pos.Z, 1));
-            Shader.SetUniform("light.direction", camera.Front);
+            Shader.SetUniform("light.direction", rotatedDirection);
             Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(15)));
             Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20)));
             if (toogle)
@@ -128,7 +136,6 @@ namespace Game3D
                 vertices[i2].normal += norm;
             }
 
-            // Normalize the accumulated normals
             for (int i = 0; i < vertices.Length; i++)
             {
                 if (vertices[i].normal.LengthSquared > 0.0001f)
@@ -137,7 +144,7 @@ namespace Game3D
                 }
                 else
                 {
-                    vertices[i].normal = new Vector3(0, 1, 0); // Fallback
+                    vertices[i].normal = new Vector3(0, 1, 0);
                 }
             }
         }

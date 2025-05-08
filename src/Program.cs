@@ -1,4 +1,5 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
 using OpenTK.Windowing.Common;
@@ -74,7 +75,7 @@ public class Program : GameWindow
             window = this
         };
 
-        this.LoadMap("maps/test.md");
+        this.LoadMap("maps/basic.md");
         light = new Light(new Vector3(-mapSizeX / 2, -1, -mapSizeZ / 2), false, 0.3f);        
     }
 
@@ -112,7 +113,7 @@ public class Program : GameWindow
         }
         for (int i = 0; i < doors.Count; i++)
         {
-            if(!doors[i].open) doors[i].Draw(mainCamera, toogle);
+            doors[i].Draw(mainCamera, toogle);
         }
         for (int i = 0; i < collectibles.Count; i++)
         {
@@ -120,36 +121,34 @@ public class Program : GameWindow
         }
         SwapBuffers();
     }
-   
+
     protected override void OnUpdateFrame(FrameEventArgs e)
     {
-        Vector2 direction = new Vector2(0, 0);
+        // Get deltaTime directly from FrameEventArgs
+        float deltaTime = (float)e.Time; // This is in seconds
 
-        var input = KeyboardState;
-
-        if (input.IsKeyDown(Keys.Escape))
+        // Update all doors
+        for (int i = 0; i < doors.Count; i++)
         {
-            Close();
+            doors[i].Update(deltaTime);
         }
 
-        const float cameraSpeed = 1.5f;
-        const float cameraHeight = 1.7f;
-        const float sensitivity = 0.2f;
-
+        Vector2 direction = new Vector2(0, 0);
+        if (KeyboardState.IsKeyDown(Keys.Escape)) Close();
         if (KeyboardState.IsKeyDown(Keys.W)) direction += Vector2.UnitY;
         if (KeyboardState.IsKeyDown(Keys.S)) direction -= Vector2.UnitY;
         if (KeyboardState.IsKeyDown(Keys.A)) direction -= Vector2.UnitX;
         if (KeyboardState.IsKeyDown(Keys.D)) direction += Vector2.UnitX;
-
         if (KeyboardState.IsKeyPressed(Keys.F)) toogle = !toogle;
-
-        if (input.IsKeyPressed(Keys.E))
+        if (KeyboardState.IsKeyPressed(Keys.E))
         {
             for (int i = 0; i < doors.Count; i++)
             {
-                if (doors[i].open) continue;
+                // Check if player is near the door and can interact with it
                 if (doors[i].Check(mainCamera, collisions))
                 {
+                    // Toggle the door state
+                    doors[i].Toggle();
                     doors[i].open = true;
                     break;
                 }
@@ -159,17 +158,16 @@ public class Program : GameWindow
         var len = direction.Length;
         if (len > 0)
         {
-            direction *= (float)e.Time / len;
+            direction *= deltaTime / len; // Using the deltaTime we got from e.Time
             mainCamera.Move(direction.X, direction.Y, collisions);
         }
 
         if (mouseDelta.LengthSquared > 0.00001)
         {
-            mainCamera.RotateX(mouseDelta.Y * (float)e.Time);
-            mainCamera.RotateY(mouseDelta.X * (float)e.Time);
+            mainCamera.RotateX(mouseDelta.Y * deltaTime); // Using the deltaTime here too
+            mainCamera.RotateY(mouseDelta.X * deltaTime);
             mouseDelta = Vector2.Zero;
         }
-
     }
 
     protected override void OnMouseWheel(MouseWheelEventArgs e)
@@ -201,16 +199,16 @@ public class Program : GameWindow
             plane.Shader = new Shader("basic.vert", "basic.frag");
             plane.Material = new Material() { diffuse = new Vector3(0.5f, 0.5f, 0.5f), specular = new Vector3(0.8f, 0.8f, 0.8f), shininess = 50 };
 
-            collisions = new bool[mapSizeX / 2][];
-            for (int i = 0; i < mapSizeX / 2; i++)
+            collisions = new bool[mapSizeZ / 2][];
+            for (int i = 0; i < mapSizeZ / 2; i++)
             {
-                collisions[i] = new bool[mapSizeZ / 2];
+                collisions[i] = new bool[mapSizeX / 2];
             }
 
             int z = 0;
             while ((line = reader.ReadLine()) != null)
             {
-                for(int x = 0; x < line.Length; x++)
+                for(int x = 0; x < mapSizeX/2; x++)
                 {
                     char cell = line[x];
                     Vector3 position = new Vector3((x * 2) + 1, 0, (z * 2) + 1);
@@ -232,7 +230,7 @@ public class Program : GameWindow
                     }
                     else if (cell >= 'A' && cell <= 'G')
                     {
-                        doors.Add(new Door(position, x, z));
+                        doors.Add(new Door(position, x, z, collisions));
                         doors[^1].Shader = new Shader("basic.vert", "basic.frag");
                         doors[^1].Material = new Material() { diffuse = new Vector3(0.5f, 0.3f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
 
@@ -242,7 +240,7 @@ public class Program : GameWindow
                     {
                         Vector3 specialPosition = position;
                         specialPosition.Y = 0;
-                        collectibles.Add(new SimpleObj("coinBagTest.obj", specialPosition));
+                        collectibles.Add(new SimpleObj("sphere.obj", specialPosition));
                         collectibles[^1].Shader = new Shader("basic.vert", "basic.frag");
                         collectibles[^1].Material = new Material() { diffuse = new Vector3(0.7f, 0.5f, 0.0f), specular = new Vector3(0.8f, 0.8f, 0.1f), shininess = 50 };
 

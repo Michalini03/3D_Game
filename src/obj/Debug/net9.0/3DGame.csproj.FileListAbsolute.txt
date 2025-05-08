@@ -66,3 +66,9 @@ D:\UNI\3D_Game\src\obj\Debug\net9.0\refint\3DGame.dll
 D:\UNI\3D_Game\src\obj\Debug\net9.0\3DGame.pdb
 D:\UNI\3D_Game\src\obj\Debug\net9.0\3DGame.genruntimeconfig.cache
 D:\UNI\3D_Game\src\obj\Debug\net9.0\ref\3DGame.dll
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\coinBag.obj
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\coinBagTest.obj
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\maps\test.md
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\untitled.obj
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\maps\advanced.md
+H:\PROGRAMOVANI\3D_Game\src\bin\Debug\net9.0\maps\basic.md

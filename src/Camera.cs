@@ -19,15 +19,13 @@ namespace Zpg
         public float sensitivity = 1;
         public Viewport viewport;
 
-        // Add the front vector property
         public Vector3 Front
         {
             get
             {
-                // Calculate direction vector based on rotation angles
                 Vector3 direction = new Vector3();
                 direction.X = (float)(Math.Cos(rx) * Math.Sin(ry));
-                direction.Y = -(float)(Math.Sin(rx));  // Removed the negative sign here
+                direction.Y = -(float)(Math.Sin(rx));
                 direction.Z = -(float)(Math.Cos(rx) * Math.Cos(ry));
                 return direction.Normalized();
             }
@@ -59,100 +57,114 @@ namespace Zpg
         {
             float newPosX = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
             float newPosZ = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
-
             float collisionRadius = 0.20f;
 
-            // Try to move separately on X and Z axes for wall sliding
+            int mapWidth = collision[0].Length * 2;
+            int mapHeight = collision.Length * 2;
+
+            if (newPosX < collisionRadius || newPosX > mapWidth - collisionRadius)
+            {
+                newPosX = Math.Clamp(newPosX, collisionRadius, mapWidth - collisionRadius);
+            }
+
+            if (newPosZ < collisionRadius || newPosZ > mapHeight - collisionRadius)
+            {
+                newPosZ = Math.Clamp(newPosZ, collisionRadius, mapHeight - collisionRadius);
+            }
+
             bool canMoveX = true;
             bool canMoveZ = true;
 
-            // Check X movement
             float testPosX = newPosX;
             float testPosZ = pos.Z;
 
-            // Check collision on X axis movement
             int colIndexX = (int)(testPosX / 2);
             int rowIndexX = (int)(testPosZ / 2);
 
-            // Check surrounding cells for radius-based collision on X axis
-            for (int r = -1; r <= 1; r++)
+            if (rowIndexX >= 0 && rowIndexX < collision.Length &&
+                colIndexX >= 0 && colIndexX < collision[0].Length)
             {
-                for (int c = -1; c <= 1; c++)
+                for (int r = -1; r <= 1; r++)
                 {
-                    int checkRow = rowIndexX + r;
-                    int checkCol = colIndexX + c;
-
-                    if (checkRow >= 0 && checkRow < collision.Length &&
-                        checkCol >= 0 && checkCol < collision[checkRow].Length &&
-                        collision[checkRow][checkCol])
+                    for (int c = -1; c <= 1; c++)
                     {
-                        // Calculate center of the cell
-                        float cellCenterX = (checkCol * 2) + 1;
-                        float cellCenterZ = (checkRow * 2) + 1;
+                        int checkRow = rowIndexX + r;
+                        int checkCol = colIndexX + c;
 
-                        // Calculate distance from player to cell center
-                        float distX = Math.Abs(testPosX - cellCenterX);
-                        float distZ = Math.Abs(testPosZ - cellCenterZ);
-
-                        // If too close to wall center, block X movement
-                        if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                        if (checkRow >= 0 && checkRow < collision.Length &&
+                            checkCol >= 0 && checkCol < collision[checkRow].Length &&
+                            collision[checkRow][checkCol])
                         {
-                            canMoveX = false;
-                            break;
+                            float cellCenterX = (checkCol * 2) + 1;
+                            float cellCenterZ = (checkRow * 2) + 1;
+
+                            float distX = Math.Abs(testPosX - cellCenterX);
+                            float distZ = Math.Abs(testPosZ - cellCenterZ);
+
+                            if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                            {
+                                canMoveX = false;
+                                break;
+                            }
                         }
                     }
+                    if (!canMoveX) break;
                 }
-                if (!canMoveX) break;
+            }
+            else
+            {
+                canMoveX = false;
             }
 
-            // Check Z movement
             testPosX = pos.X;
             testPosZ = newPosZ;
 
-            // Check collision on Z axis movement
             int colIndexZ = (int)(testPosX / 2);
             int rowIndexZ = (int)(testPosZ / 2);
 
-            // Check surrounding cells for radius-based collision on Z axis
-            for (int r = -1; r <= 1; r++)
+            if (rowIndexZ >= 0 && rowIndexZ < collision.Length &&
+                colIndexZ >= 0 && colIndexZ < collision[0].Length)
             {
-                for (int c = -1; c <= 1; c++)
+                for (int r = -1; r <= 1; r++)
                 {
-                    int checkRow = rowIndexZ + r;
-                    int checkCol = colIndexZ + c;
-
-                    if (checkRow >= 0 && checkRow < collision.Length &&
-                        checkCol >= 0 && checkCol < collision[checkRow].Length &&
-                        collision[checkRow][checkCol])
+                    for (int c = -1; c <= 1; c++)
                     {
-                        // Calculate center of the cell
-                        float cellCenterX = (checkCol * 2) + 1;
-                        float cellCenterZ = (checkRow * 2) + 1;
+                        int checkRow = rowIndexZ + r;
+                        int checkCol = colIndexZ + c;
 
-                        // Calculate distance from player to cell center
-                        float distX = Math.Abs(testPosX - cellCenterX);
-                        float distZ = Math.Abs(testPosZ - cellCenterZ);
-
-                        // If too close to wall center, block Z movement
-                        if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                        if (checkRow >= 0 && checkRow < collision.Length &&
+                            checkCol >= 0 && checkCol < collision[checkRow].Length &&
+                            collision[checkRow][checkCol])
                         {
-                            canMoveZ = false;
-                            break;
+                            float cellCenterX = (checkCol * 2) + 1;
+                            float cellCenterZ = (checkRow * 2) + 1;
+
+                            float distX = Math.Abs(testPosX - cellCenterX);
+                            float distZ = Math.Abs(testPosZ - cellCenterZ);
+
+                            if (distX < collisionRadius + 1 && distZ < collisionRadius + 1)
+                            {
+                                canMoveZ = false;
+                                break;
+                            }
                         }
                     }
+                    if (!canMoveZ) break;
                 }
-                if (!canMoveZ) break;
+            }
+            else
+            {
+                canMoveZ = false;
             }
 
-            // Apply movement based on what's allowed
             if (canMoveX)
             {
-                pos.X = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
+                pos.X = newPosX;
             }
 
             if (canMoveZ)
             {
-                pos.Z = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
+                pos.Z = newPosZ;
             }
         }
 

@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("3DGame")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+96b806fb50961aa1ef820cf6ed713bf8d6f483e9")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6e1e2dcc31c12b1231e7009d8443a77c419396d3")]
 [assembly: System.Reflection.AssemblyProductAttribute("3DGame")]
 [assembly: System.Reflection.AssemblyTitleAttribute("3DGame")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
