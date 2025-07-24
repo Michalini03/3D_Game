@@ -1,12 +1,7 @@
 ﻿using Game3D;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Mathematics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
+
 namespace Zpg
 {
     public class Camera
@@ -18,7 +13,9 @@ namespace Zpg
         public float speed = 1.4f;
         public float sensitivity = 1;
         public Viewport viewport;
+        public int k = 0;
 
+        public float whiteFade = 0;
         public Vector3 Front
         {
             get
@@ -53,7 +50,7 @@ namespace Zpg
             Console.WriteLine(zoom);
         }
 
-        public void Move(float xdt, float ydt, bool[][] collision)
+        public void Move(float xdt, float ydt, bool[][][] collision)
         {
             float newPosX = pos.X + speed * (float)(xdt * Math.Cos(ry) + ydt * Math.Sin(ry));
             float newPosZ = pos.Z + speed * (float)(xdt * Math.Sin(ry) - ydt * Math.Cos(ry));
@@ -93,7 +90,7 @@ namespace Zpg
 
                         if (checkRow >= 0 && checkRow < collision.Length &&
                             checkCol >= 0 && checkCol < collision[checkRow].Length &&
-                            collision[checkRow][checkCol])
+                            collision[checkRow][checkCol][this.k])
                         {
                             float cellCenterX = (checkCol * 2) + 1;
                             float cellCenterZ = (checkRow * 2) + 1;
@@ -134,7 +131,7 @@ namespace Zpg
 
                         if (checkRow >= 0 && checkRow < collision.Length &&
                             checkCol >= 0 && checkCol < collision[checkRow].Length &&
-                            collision[checkRow][checkCol])
+                            collision[checkRow][checkCol][this.k])
                         {
                             float cellCenterX = (checkCol * 2) + 1;
                             float cellCenterZ = (checkRow * 2) + 1;
@@ -171,7 +168,7 @@ namespace Zpg
         public void RotateX(float a)
         {
             rx += a * sensitivity;
-            rx = (float)Math.Max(-Math.PI / 2, Math.Min(Math.PI / 2, rx));
+            rx = (float)Math.Max(-Math.PI / 2 + 0.01, Math.Min(Math.PI / 2 - 0.01, rx));
         }
 
         public void RotateY(float a)

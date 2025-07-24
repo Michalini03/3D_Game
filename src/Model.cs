@@ -23,6 +23,8 @@ namespace Game3D
 
         public Material Material { get; set; }
 
+        public Dictionary<string, Texture> Textures { get; set; } = new();
+
         public Vector3 position { get; set; }
 
         public int vbo;       
@@ -30,6 +32,8 @@ namespace Game3D
         public int vao;
 
         public int triangles;
+
+        public float rotationAngle = 0.0f;
 
         protected void Create(Vertex[] vertices, int[] indices)
         {
@@ -56,6 +60,8 @@ namespace Game3D
             GL.EnableVertexAttribArray(0);
             GL.VertexAttribPointer(1, 3, VertexAttribPointerType.Float, false, Vertex.SizeOf(), (IntPtr)3 * sizeof(float));
             GL.EnableVertexAttribArray(1);
+            GL.VertexAttribPointer(2, 2, VertexAttribPointerType.Float, false, Vertex.SizeOf(), (IntPtr)6 * sizeof(float));
+            GL.EnableVertexAttribArray(2);
 
             GL.BindVertexArray(0);
         }
@@ -64,49 +70,68 @@ namespace Game3D
         /// <summary>
         /// Vykreslení modelu
         /// </summary>
-        public void Draw(Camera camera, bool toogle)
+        public void Draw(Camera camera, Light light, bool toogle, bool lightMode, bool isMinimap = false)
         {
+            Matrix4 rotation = Matrix4.CreateRotationY(rotationAngle);
             Matrix4 translate = Matrix4.CreateTranslation((float)position.X, (float)position.Y, (float)position.Z);
+            Matrix4 world = rotation * translate;
 
             Shader.Use();
             Shader.SetUniform("projection", camera.Projection);
             Shader.SetUniform("view", camera.View);
-            Shader.SetUniform("model", translate);
+            Shader.SetUniform("model", world);
 
             Shader.SetUniform("cameraPosWorld", camera.pos);
             Material.SetUniforms(Shader);
 
-            const float flashlightHeight = 2.05f;
-            float depressionAngle = 2.0f;
-
-            float depressionRad = depressionAngle * (float)Math.PI / 180.0f;
-
-            Vector3 rotatedDirection = new Vector3(
-                camera.Front.X,
-                camera.Front.Y * (float)Math.Cos(depressionRad) - camera.Front.Z * (float)Math.Sin(depressionRad),
-                camera.Front.Y * (float)Math.Sin(depressionRad) + camera.Front.Z * (float)Math.Cos(depressionRad)
-            );
-            rotatedDirection = Vector3.Normalize(rotatedDirection);
-
-            Shader.SetUniform("light.position", new Vector4(camera.pos.X, flashlightHeight, camera.pos.Z, 1));
-            Shader.SetUniform("light.direction", rotatedDirection);
-            Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(15)));
-            Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20)));
-            if (toogle)
-                Shader.SetUniform("light.color", Vector3.One);
+            if (isMinimap)
+            {
+                // Simple directional light from above
+                Shader.SetUniform("light.position", new Vector4(0, 70, 0, 0)); // Directional light (w=0)
+                Shader.SetUniform("light.direction", new Vector3(0, -1, 0));   // Shine downward
+                Shader.SetUniform("light.color", new Vector3(1.0f, 1.0f, 1.0f)); // White light
+                Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20))); // Disable spotlight cone
+                Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(25)));
+                Shader.SetUniform("ambientStrength", 1f);
+                Shader.SetUniform("whiteFade", 0f);
+            }
             else
-                Shader.SetUniform("light.color", Vector3.Zero);
-            /**
-            Shader.SetUniform("light.ambient", new Vector3(0.2f, 0.2f, 0.2f));
-            Shader.SetUniform("light.diffuse", new Vector3(0.5f, 0.5f, 0.5f));
-            Shader.SetUniform("light.specular", new Vector3(1.0f, 1.0f, 1.0f));*/
+            {
+                // Flashlight logic
+                float flashlightHeight = 2.05f + (camera.pos.Y - 1.7f);
+                float depressionAngle = 2.0f;
+                float depressionRad = MathHelper.DegreesToRadians(depressionAngle);
+
+                Vector3 rotatedDirection = new Vector3(
+                    camera.Front.X,
+                    camera.Front.Y * (float)Math.Cos(depressionRad) - camera.Front.Z * (float)Math.Sin(depressionRad),
+                    camera.Front.Y * (float)Math.Sin(depressionRad) + camera.Front.Z * (float)Math.Cos(depressionRad)
+                );
+                rotatedDirection = Vector3.Normalize(rotatedDirection);
+
+                Shader.SetUniform("light.position", new Vector4(camera.pos.X, flashlightHeight, camera.pos.Z, 1));
+                Shader.SetUniform("light.direction", rotatedDirection);
+                Shader.SetUniform("light.cutOff", (float)Math.Cos(MathHelper.DegreesToRadians(20)));
+                Shader.SetUniform("light.outerCutOff", (float)Math.Cos(MathHelper.DegreesToRadians(25)));
+                Shader.SetUniform("light.color", toogle ? Vector3.One : Vector3.Zero);
+                Shader.SetUniform("ambientStrength", 0.01f);
+                Shader.SetUniform("whiteFade", camera.whiteFade);
+            }
+
+            int unit = 0;
+            foreach (var kw in Textures)
+            {
+                kw.Value.Bind(Shader.uniforms[kw.Key], unit++);
+            }
 
             // Připojení bufferu
             GL.BindVertexArray(vao);
 
             //GL.Enable(EnableCap.CullFace);
             //GL.LineWidth(5);
-            GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Fill);
+
+            if (!lightMode) GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Fill);
+            else GL.PolygonMode(TriangleFace.FrontAndBack, PolygonMode.Line);
 
             // Vykreslení pole vrcholů
             GL.DrawElements(PrimitiveType.Triangles, 3*triangles, DrawElementsType.UnsignedInt, IntPtr.Zero);

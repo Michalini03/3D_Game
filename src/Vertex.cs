@@ -16,15 +16,23 @@ namespace Game3D
     {
         public Vector3 position;
         public Vector3 normal;
+        public Vector2 TexCoords;
+
+        public Vertex(Vector3 position, Vector3 normal, Vector2 texCoords)
+        {
+            this.position = position;
+            this.normal = normal;
+            this.TexCoords = texCoords;
+        }
 
         public Vertex(Vector3 position, Vector3 normal)
         {
             this.position = position;
             this.normal = normal;
+            this.TexCoords = Vector2.Zero;
         }
 
         
-
         /// <summary>
         /// Vrátí velikost struktury v bytech
         /// </summary>

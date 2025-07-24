@@ -5,10 +5,10 @@ xxxxxx  xxxAxxx   x  T x
 x T  A  x     x   A *  x
 x    x  x  *  x   x    x
 xxxAxx  x     x   xxxxxx
-x       A  H  A        x
-x       x  *  x        x
+x    1  A  H  A        x
+x       x  *  x    1   x
 x  *    x     x        x
-x       xxxAxxx        x       
+x       xxxAxxx     R  x       
 x                      x
 xxAxxx    xxAxx        x
 x    x    x * x   xxAxxx

@@ -14,7 +14,7 @@ public class Shader : IDisposable
 {
     public int ID { get; private set; }
 
-    private readonly Dictionary<string, int> uniforms = new();
+    public readonly Dictionary<string, int> uniforms = new();
 
     public Shader(string vertexPath, string fragmentPath)
     {
