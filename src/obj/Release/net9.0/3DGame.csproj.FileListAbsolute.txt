@@ -51,3 +51,4 @@ H:\PROGRAMOVANI\3D_Game\src\bin\Release\net9.0\assets\untitled.obj
 H:\PROGRAMOVANI\3D_Game\src\bin\Release\net9.0\shaders\marker.frag
 H:\PROGRAMOVANI\3D_Game\src\bin\Release\net9.0\shaders\marker.vert
 H:\PROGRAMOVANI\3D_Game\src\bin\Release\net9.0\StbImageSharp.dll
+H:\PROGRAMOVANI\3D_Game\src\bin\Release\net9.0\coinBag.obj

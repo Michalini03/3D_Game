@@ -191,9 +191,6 @@ namespace Game3D
 
                 }
                 GL.DeleteBuffer(vbo);
-                GL.DeleteBuffer(ibo);
-                GL.DeleteVertexArray(vao);
-                disposed = true;
             }
         }
 

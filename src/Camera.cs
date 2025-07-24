@@ -168,7 +168,7 @@ namespace Zpg
         public void RotateX(float a)
         {
             rx += a * sensitivity;
-            rx = (float)Math.Max(-Math.PI / 2 + 0.01, Math.Min(Math.PI / 2 - 0.01, rx));
+            rx = (float)Math.Max(-Math.PI / 2, Math.Min(Math.PI / 2, rx));
         }
 
         public void RotateY(float a)
