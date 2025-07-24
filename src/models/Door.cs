@@ -29,6 +29,10 @@ namespace Zpg.models
             EastWest    // X-axis door (slides east/west)
         }
 
+        private readonly bool[][][] collisions;
+        private float openTime = 0.0f;
+        private const float AutoCloseDelay = 3.0f;
+
         public Door(Vector3 position, int indexX, int indexZ, int k, bool[][][] collisions)
         {
             this.open = false;
@@ -39,6 +43,7 @@ namespace Zpg.models
             this.isAnimating = false;
             this.animationProgress = 0.0f;
             this.k = k; // Floor index, if needed for collision detection
+            this.collisions = collisions;
 
             // Determine door orientation based on position in the map
             DetermineOrientation(collisions);
@@ -113,15 +118,13 @@ namespace Zpg.models
             // If the door's Z coordinate is odd, it's a north-south door
             int x = (int)position.X / 2;
             int z = (int)position.Z / 2;
-            // This is a simplification and may need adjustment based on your map layout
-            if (collision[z][x - 1][this.k] && collision[z][x - 1][this.k])
-            {
+            // Determine orientation based on adjacent walls
+            bool leftWall  = x - 1 >= 0 && collision[z][x - 1][this.k];
+            bool rightWall = x + 1 < collision[z].Length && collision[z][x + 1][this.k];
+            if (leftWall || rightWall)
                 orientation = DoorOrientation.EastWest;
-            }
             else
-            {
                 orientation = DoorOrientation.NorthSouth;
-            }
         }
 
         // Calculate where the door should slide to when opened
@@ -145,6 +148,17 @@ namespace Zpg.models
         // Update method for animation - call this every frame in your game loop
         public void Update(float deltaTime)
         {
+            if (open)
+            {
+                openTime += deltaTime;
+                if (openTime >= AutoCloseDelay)
+                {
+                    open = false;
+                    openTime = 0.0f;
+                    collisions[indexZ][indexX][this.k] = true;
+                }
+            }
+
             if ((open && animationProgress < 1.0f) || (!open && animationProgress > 0.0f))
             {
                 isAnimating = true;
@@ -202,6 +216,10 @@ namespace Zpg.models
         public void Toggle()
         {
             open = !open;
+            if (open)
+            {
+                openTime = 0.0f;
+            }
         }
     }
 }

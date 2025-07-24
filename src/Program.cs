@@ -206,6 +206,7 @@ public class Program : GameWindow
     {
         float deltaTime = (float)e.Time;
         Vector2 direction = new Vector2(0, 0);
+        float speedMultiplier = 1.0f;
 
         // End game when all collectibles are collected
         if (SCORE >= TO_COLLECT)
@@ -234,6 +235,8 @@ public class Program : GameWindow
         if (KeyboardState.IsKeyDown(Keys.S)) direction -= Vector2.UnitY;
         if (KeyboardState.IsKeyDown(Keys.A)) direction -= Vector2.UnitX;
         if (KeyboardState.IsKeyDown(Keys.D)) direction += Vector2.UnitX;
+        if (KeyboardState.IsKeyDown(Keys.LeftShift) || KeyboardState.IsKeyDown(Keys.RightShift))
+            speedMultiplier = 2.0f;
         if (KeyboardState.IsKeyPressed(Keys.F)) toogle = !toogle;
         if (KeyboardState.IsKeyPressed(Keys.E))
         {
@@ -268,7 +271,7 @@ public class Program : GameWindow
         baseY_k = baseY + (3.1f * mainCamera.k);
         if (len > 0)
         {
-            direction *= deltaTime / len; // Using the deltaTime we got from e.Time
+            direction *= speedMultiplier * deltaTime / len; // Apply speed multiplier
             mainCamera.Move(direction.X, direction.Y, collisions);
 
             headBobTimer += deltaTime * 6.0f; // Add this as a class field
