@@ -115,6 +115,14 @@ namespace Zpg.models
             int z = (int)position.Z / 2;
             // This is a simplification and may need adjustment based on your map layout
             if (collision[z][x - 1][this.k] && collision[z][x - 1][this.k])
+            bool east = x + 1 < collision[0].Length && collision[z][x + 1];
+            bool west = x - 1 >= 0 && collision[z][x - 1];
+            bool north = z - 1 >= 0 && collision[z - 1][x];
+            bool south = z + 1 < collision.Length && collision[z + 1][x];
+
+            // If there are walls to the north and south the door lies east-west,
+            // otherwise it is oriented north-south
+            if (north && south && !(east && west))
             {
                 orientation = DoorOrientation.EastWest;
             }
